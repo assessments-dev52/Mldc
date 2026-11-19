@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MLDC Self-Assessments · Managing & Leading in Different Countries</title>
+<style>
+  :root{
+    --d1:#1E2761; --d1t:#E6E9F3;
+    --d2:#028090; --d2t:#E0F1F2;
+    --d3:#6D2E46; --d3t:#F2E6EA;
+    --d4:#2D6A4F; --d4t:#E3EFE8;
+    --gold:#E3A33B; --ink:#1F2430; --muted:#5B6378; --line:#DDE3EE; --bg:#F6F7FB;
+    --c:var(--d1); --ct:var(--d1t);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Segoe UI",Calibri,system-ui,-apple-system,Roboto,Arial,sans-serif;font-size:16px;line-height:1.45}
+  h1,h2,h3{font-family:Cambria,Georgia,"Times New Roman",serif;margin:0 0 .4em}
+  button{font:inherit;cursor:pointer}
+  .wrap{max-width:860px;margin:0 auto;padding:16px}
+  header.top{background:var(--c);color:#fff;padding:18px 0 22px;transition:background .3s}
+  header.top .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .logo{width:46px;height:46px;border-radius:50%;border:2px solid var(--gold);display:grid;place-items:center;font-weight:700;color:var(--gold);font-family:Cambria,Georgia,serif;flex:none}
+  header.top h1{font-size:1.25rem;margin:0}
+  header.top .sub{opacity:.85;font-size:.9rem}
+  .who{margin-left:auto;font-size:.85rem;text-align:right;opacity:.95}
+  .who a{color:var(--gold);text-decoration:underline;cursor:pointer}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;margin:16px 0;box-shadow:0 1px 3px rgba(20,30,60,.05)}
+  label.f{display:block;font-weight:600;margin:12px 0 4px}
+  input[type=text],input[type=email],select,textarea{width:100%;padding:11px 12px;border:1px solid #C9CFDB;border-radius:10px;font:inherit;background:#fff}
+  textarea{min-height:70px;resize:vertical}
+  .btn{background:var(--c);color:#fff;border:0;border-radius:10px;padding:12px 20px;font-weight:600}
+  .btn.ghost{background:#fff;color:var(--c);border:1.5px solid var(--c)}
+  .btn.gold{background:var(--gold);color:#1F2430}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .tabs{display:flex;gap:8px;margin:18px 0 6px;flex-wrap:wrap}
+  .tab{flex:1;min-width:150px;border:0;border-radius:12px;padding:12px;background:#fff;border:1px solid var(--line);text-align:left}
+  .tab b{display:block;font-family:Cambria,Georgia,serif;font-size:1.05rem}
+  .tab small{color:var(--muted)}
+  .tab.on{color:#fff}
+  .tab.on small{color:#fff;opacity:.85}
+  .tab[data-d="1"].on{background:var(--d1)} .tab[data-d="2"].on{background:var(--d2)} .tab[data-d="3"].on{background:var(--d3)} .tab[data-d="4"].on{background:var(--d4)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+  .acard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:130px;position:relative}
+  .acard:hover{border-color:var(--c);box-shadow:0 2px 10px rgba(20,30,60,.08)}
+  .badge{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--c);color:#fff;font-weight:700;font-size:.9rem}
+  .acard h3{font-size:1.05rem;margin:4px 0 0}
+  .acard p{margin:0;color:var(--muted);font-size:.9rem}
+  .done{position:absolute;top:14px;right:14px;background:#E3F4E8;color:#1D6B3A;border-radius:999px;padding:3px 10px;font-size:.78rem;font-weight:700}
+  .done.res{max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .steps{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 0}
+  .steps span{background:var(--ct);color:var(--c);border-radius:999px;padding:4px 12px;font-size:.82rem;font-weight:600}
+  .crumb{color:var(--muted);font-size:.9rem;margin-top:10px}
+  .crumb a{color:var(--c);cursor:pointer;text-decoration:underline}
+  .ahead{display:flex;gap:14px;align-items:center}
+  .ahead h2{font-size:1.5rem;margin:0}
+  .instr{background:var(--ct);border-radius:12px;padding:12px 14px;margin:12px 0;font-size:.95rem}
+  .q{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}
+  .q.miss{border-color:#C0392B;box-shadow:0 0 0 2px rgba(192,57,43,.15)}
+  .qt{font-weight:600;margin-bottom:10px;display:flex;gap:10px}
+  .qn{color:var(--c);font-weight:700;flex:none;min-width:26px}
+  .scale{display:flex;gap:6px}
+  .scale button{flex:1;min-width:0;padding:10px 0;border-radius:10px;border:1.5px solid #C9CFDB;background:#fff;font-weight:700;color:var(--ink)}
+  .scale button.on,.opt.on{background:var(--c);border-color:var(--c);color:#fff}
+  .ends{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:4px}
+  .opts{display:grid;gap:8px}
+  .opts.two{grid-template-columns:1fr 1fr}
+  .opt{text-align:left;padding:11px 12px;border-radius:10px;border:1.5px solid #C9CFDB;background:#fff;color:var(--ink);display:flex;gap:10px;align-items:flex-start}
+  .opt .L{font-weight:800;color:var(--c);flex:none}
+  .opt.on .L{color:var(--gold)}
+  .progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin:8px 0 2px}
+  .progress i{display:block;height:100%;background:var(--c);width:0;transition:width .2s}
+  .sticky{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 30%);padding:18px 0 12px;margin-top:8px}
+  .rhero{background:var(--c);color:#fff;border-radius:16px;padding:22px}
+  .rhero .k{color:var(--gold);font-weight:700;letter-spacing:.08em;font-size:.8rem;text-transform:uppercase}
+  .rhero h2{font-size:1.8rem;margin:.2em 0}
+  .rhero p{margin:.3em 0 0;opacity:.95}
+  .scores{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+  .sc{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:120px}
+  .sc b{display:block;font-size:1.5rem;color:var(--c);font-family:Cambria,Georgia,serif}
+  .sc small{color:var(--muted)}
+  .rblock{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;margin:12px 0}
+  .rblock .chip{display:inline-block;background:var(--c);color:#fff;border-radius:8px;padding:3px 10px;font-size:.8rem;font-weight:700;margin-bottom:6px}
+  .rblock h3{margin:.1em 0 .3em;color:var(--c);font-size:1.2rem}
+  .tip{background:#FFF6E5;border-left:0;border-radius:10px;padding:10px 12px;margin-top:8px}
+  .tip b{color:#9A6A12}
+  .bar{display:grid;grid-template-columns:150px 1fr 40px;gap:8px;align-items:center;margin:6px 0;font-size:.9rem}
+  .bar .t{height:12px;background:var(--line);border-radius:999px;position:relative;overflow:hidden}
+  .bar .t i{position:absolute;inset:0 auto 0 0;background:var(--c);border-radius:999px}
+  .bar .t em{position:absolute;top:-3px;width:4px;height:18px;background:var(--gold);border-radius:2px}
+  .note{font-size:.85rem;color:var(--muted)}
+  .status{font-size:.9rem;padding:10px 12px;border-radius:10px;margin:10px 0}
+  .status.ok{background:#E3F4E8;color:#1D6B3A}
+  .status.wait{background:#EEF1F7;color:var(--muted)}
+  .status.err{background:#FDECEA;color:#9B2C1F}
+  table.k{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}
+  table.k th,table.k td{border:1px solid var(--line);padding:6px 8px;text-align:left}
+  table.k th{background:var(--c);color:#fff}
+  .hide{display:none!important}
+  footer{color:var(--muted);font-size:.8rem;text-align:center;padding:24px 16px 40px}
+  @media (max-width:560px){ .opts.two{grid-template-columns:1fr} .bar{grid-template-columns:110px 1fr 34px} .rhero h2{font-size:1.45rem} .who{margin-left:0;text-align:left} }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="logo">M</div>
+  <div><h1>Managing &amp; Leading in Different Countries</h1><div class="sub">Self-Assessments · Know yourself, lead others</div></div>
+  <div class="who" id="who"></div>
+</div></header>
+
+<main class="wrap" id="app"></main>
+<footer>These are simple self-reflection tools for learning and discussion — not scientific psychometric tests.<br>Hofstede scores are approximate; see the Hofstede country comparison tool for the latest figures.</footer>
+
+<script>
+/* =========================================================
+   1) SETTINGS — paste your Google Apps Script Web App URL here
+   ========================================================= */
+const CONFIG = {
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyFFXfotLQBFvkjvcuF37svUaqcvYtvMGT-M1ICh7wz8FniZBdQH3gU8mEaMpWV76BO/exec",
+  COURSE: "MLDC",
+  COHORT_DEFAULT: ""
+};
+
+/* =========================================================
+   2) DATA
+   ========================================================= */
+const DAYS = {
+  1:{name:"Day 1",title:"What type of leader are you?",c:"--d1",ct:"--d1t"},
+  2:{name:"Day 2",title:"Cultural intelligence & sensitivity",c:"--d2",ct:"--d2t"},
+  3:{name:"Day 3",title:"The Mirror",c:"--d3",ct:"--d3t"},
+  4:{name:"Day 4",title:"Generations at work",c:"--d4",ct:"--d4t"}
+};
+const S5A = ["Strongly disagree","Strongly agree"], F5 = ["Never","Always"];
+
+const HOF = {
+  "Egypt":[70,25,45,80,7,4],"Saudi Arabia":[95,25,60,80,36,52],"Germany":[35,67,66,65,83,40],"Switzerland":[34,68,70,58,74,66],
+  "USA":[40,91,62,46,26,68],"UK":[35,89,66,35,51,69],"Japan":[54,46,95,92,88,42],"China":[80,20,66,30,87,24],
+  "India":[77,48,56,40,51,26],"Sweden":[31,71,5,29,53,78],"Mexico":[81,30,69,82,24,97]
+};
+const DIMS = ["Power Distance","Individualism","Masculinity","Uncertainty Avoidance","Long-Term Orientation","Indulgence"];
+
+const A = [
+/* ---------------- DAY 1 ---------------- */
+{ id:"1.1", day:1, title:"My Leadership Style", time:10, type:"choice",
+  blurb:"10 situations — discover your main and back-up leadership style.",
+  instr:"For each situation, choose the ONE answer that sounds most like you.",
+  items:[
+   {t:"A new project starts. I first…",o:["Set clear tasks and deadlines","Explain the big goal and why it matters","Ask each person what they want to learn from it","Ask the team how we should approach it"]},
+   {t:"A team member makes a mistake. I…",o:["Tell them exactly how to fix it","Remind them of what we're trying to achieve","Ask what they learned and how they'd do it next time","Discuss it with the team so we all learn"]},
+   {t:"We're behind schedule. I…",o:["Take control and assign extra work","Re-energize everyone around the goal","Help the people who are struggling","Call a meeting to agree on a recovery plan"]},
+   {t:"In meetings I mostly…",o:["Give direction","Paint a picture of the future","Ask questions","Facilitate discussion"]},
+   {t:"My team would say I'm…",o:["Decisive","Inspiring","Supportive","Inclusive"]},
+   {t:"A big decision must be made. I…",o:["Decide quickly myself","Decide based on our long-term vision","Let the person closest to it decide, with my support","Seek the team's agreement"]},
+   {t:"A new person joins. I…",o:["Give them a clear job description and rules","Share our mission and story","Agree on their development goals","Introduce them to everyone and include them in decisions"]},
+   {t:"I feel most satisfied when…",o:["Results are delivered on time","People believe in where we're going","Someone I helped grows","The whole team owns the result"]},
+   {t:"When there's a conflict, I…",o:["Settle it and move on","Bring people back to the shared goal","Talk one-to-one with each person","Get everyone to talk it through together"]},
+   {t:"My biggest frustration is…",o:["Slow, unclear work","People without a sense of purpose","People who don't want to learn","Decisions made without consultation"]}
+  ]},
+{ id:"1.2", day:1, title:"How I Want to Be Led", time:8, type:"scale", n:5, ends:S5A,
+  blurb:"Do you want a manager who guides you, trusts you — or partners with you?",
+  instr:"Rate each statement from 1 (strongly disagree) to 5 (strongly agree).",
+  items:[
+   {k:"S",t:"I like my manager to tell me exactly what is expected."},{k:"S",t:"I prefer clear rules and procedures."},{k:"S",t:"I like regular check-ins with my manager."},{k:"S",t:"I want my manager to make the final decision."},{k:"S",t:"I like to have detailed instructions before I start."},
+   {k:"F",t:"I prefer to decide for myself how to do my work."},{k:"F",t:"I get frustrated when my manager checks my work too often."},{k:"F",t:"I want to be involved in big decisions."},{k:"F",t:"I like to be given a goal and left to reach it my way."},{k:"F",t:"I'm comfortable challenging my manager openly."}
+  ]},
+{ id:"1.3", day:1, title:"Task or People?", time:8, type:"scale", n:5, ends:F5,
+  blurb:"Do you lead through results, relationships — or both?",
+  instr:"As a leader, how often do you do each of these? 1 = never · 5 = always.",
+  items:[
+   {k:"T",t:"I set clear goals and deadlines."},{k:"T",t:"I track results closely."},{k:"T",t:"I push for high performance."},{k:"T",t:"I plan the work in detail."},{k:"T",t:"I focus on getting the job done, even under pressure."},
+   {k:"P",t:"I care about how my team members feel."},{k:"P",t:"I make time to listen to personal concerns."},{k:"P",t:"I build trust and good relationships in the team."},{k:"P",t:"I recognize and thank people for their effort."},{k:"P",t:"I help team members develop their skills."}
+  ]},
+{ id:"1.4", day:1, title:"Manager or Leader?", time:6, type:"pair",
+  blurb:"10 quick either/or choices based on Kotter's managing vs leading.",
+  instr:"For each pair, choose the statement that describes you better.",
+  items:[
+   ["I focus on doing things right","I focus on doing the right things"],["I plan and budget","I set direction and vision"],["I organize people into roles","I align people around a purpose"],["I control and solve problems","I motivate and inspire"],["I prefer stability","I'm comfortable with change"],
+   ["I ask \"how?\" and \"when?\"","I ask \"what?\" and \"why?\""],["I rely on my position","I rely on my influence"],["I focus on this quarter","I focus on the next 3–5 years"],["I avoid risk","I take calculated risks"],["People follow my instructions","People follow my example"]
+  ]},
+/* ---------------- DAY 2 ---------------- */
+{ id:"2.1", day:2, title:"What Type Is Your Country?", time:12, type:"scale", n:5, ends:S5A, country:true,
+  blurb:"Score your country on Hofstede's six dimensions — then compare with the official scores.",
+  instr:"Think about how people in YOUR COUNTRY usually behave at work (not you personally). 1 = strongly disagree · 5 = strongly agree.",
+  items:[
+   {k:"PDI",t:"People rarely disagree with their boss in public."},{k:"PDI",t:"Titles and seniority matter a lot."},{k:"PDI",t:"The boss is expected to make the decisions."},
+   {k:"IDV",t:"People are expected to look after themselves rather than the group."},{k:"IDV",t:"Individual achievement is rewarded more than team effort."},{k:"IDV",t:"People say what they think, even if it upsets harmony."},
+   {k:"MAS",t:"Competition and winning are highly valued."},{k:"MAS",t:"People \"live to work\" rather than \"work to live\"."},{k:"MAS",t:"Success means status and money more than quality of life."},
+   {k:"UAI",t:"People like clear rules and detailed procedures."},{k:"UAI",t:"Change and uncertainty make people uncomfortable."},{k:"UAI",t:"Experts and official plans are trusted."},
+   {k:"LTO",t:"People are patient and plan for the long term."},{k:"LTO",t:"Saving and investing for the future are important."},{k:"LTO",t:"Traditions are adapted when circumstances change."},
+   {k:"IVR",t:"People feel free to enjoy life and have fun."},{k:"IVR",t:"Leisure time is very important."},{k:"IVR",t:"People generally feel optimistic and in control of their lives."}
+  ]},
+{ id:"2.2", day:2, title:"My Cultural Intelligence (CQ)", time:8, type:"scale", n:5, ends:["Not like me","Very much like me"],
+  blurb:"Your CQ level and your development area across Drive, Knowledge, Strategy and Action.",
+  instr:"Rate each statement about YOURSELF. 1 = not like me at all · 5 = very much like me.",
+  items:[
+   {k:"Drive",t:"I enjoy meeting and working with people from other cultures."},{k:"Drive",t:"I'm confident I can build relationships in an unfamiliar culture."},{k:"Drive",t:"I actively look for international experiences."},
+   {k:"Knowledge",t:"I know the main values and customs of the countries I work with."},{k:"Knowledge",t:"I understand how decision-making differs between cultures."},{k:"Knowledge",t:"I know how religion and history shape business in my key markets."},
+   {k:"Strategy",t:"I plan how to adapt before meeting people from another culture."},{k:"Strategy",t:"I notice when my assumptions about another culture are wrong."},{k:"Strategy",t:"I check that I've been understood, rather than assuming it."},
+   {k:"Action",t:"I change how directly I speak depending on who I'm with."},{k:"Action",t:"I adjust gestures, eye contact and personal space as needed."},{k:"Action",t:"I adapt how I give praise and criticism to the culture."}
+  ]},
+{ id:"2.3", day:2, title:"Direct or Indirect? Clock or Event?", time:8, type:"pair",
+  blurb:"Your communication style and your attitude to time (Hall).",
+  instr:"For each pair, choose the statement that describes you better. Questions 1–6 are about communication, 7–12 about time.",
+  items:[
+   ["I say \"no\" clearly when I mean no","I find softer ways to say no"],["I get to the point quickly","I build the relationship before the business"],["Written agreements matter most","Personal trust matters most"],["I give feedback directly, even in front of others","I give feedback gently and privately"],["If I don't understand, I say so","I try to read between the lines"],["Silence in a meeting feels uncomfortable","Silence in a meeting is normal and useful"],
+   ["Being on time is a sign of respect","A few minutes late is normal"],["I do one thing at a time","I happily do several things at once"],["A deadline is a promise","A deadline is a target"],["Interruptions annoy me","Interruptions are part of life"],["I stick to the agenda","The agenda can change if people need it"],["Schedules come before people","People come before schedules"]
+  ]},
+{ id:"2.4", day:2, title:"Cultural Sensitivity Check", time:10, type:"choice", letters:"ABC",
+  blurb:"8 real situations — how would you react?",
+  instr:"For each situation, choose what you would most likely do.",
+  items:[
+   {t:"You're meeting a new Japanese partner. He gives you his business card with both hands. You…",o:["Put it straight into your pocket and start talking","Take it with both hands, read it carefully and place it on the table","Thank him and hand him yours with one hand"],p:[0,2,1],why:"In Japan a business card is an extension of the person — receive it with respect."},
+   {t:"In a Cairo team meeting you ask, \"Any objections?\" Nobody speaks. You…",o:["Assume everyone agrees and move on","Ask again, louder","Follow up privately with a few team members"],p:[0,1,2],why:"In hierarchical, high-context cultures silence doesn't mean agreement."},
+   {t:"A Saudi client invites you to a long lunch before discussing business. You…",o:["Politely ask to discuss the contract first","Accept and enjoy building the relationship","Accept but check your phone during lunch"],p:[0,2,1],why:"In the Gulf, trust comes before business — the lunch is the business."},
+   {t:"Your German colleague bluntly says your report \"has three mistakes\". You…",o:["Feel insulted and defend yourself","Thank them and ask which mistakes","Ignore the comment"],p:[0,2,1],why:"German directness is about the task, not about you."},
+   {t:"You want to praise a Chinese team member for excellent work. You…",o:["Praise them loudly in front of the whole team","Praise the team's success publicly and thank them personally in private","Say nothing so they don't feel embarrassed"],p:[0,2,1],why:"In collectivist cultures, praise the team in public and the individual in private."},
+   {t:"You have a meeting in Riyadh during Ramadan. You…",o:["Offer coffee and snacks as usual","Avoid eating and drinking in front of fasting colleagues and keep meetings shorter","Ask everyone why they aren't drinking"],p:[0,2,0],why:"Respect for religious practice builds deep trust."},
+   {t:"A Swedish manager calls you by your first name on day one and asks for your honest opinion. You…",o:["Feel disrespected","Use their first name and give your honest view","Stay formal and say what you think they want to hear"],p:[0,2,1],why:"In low power-distance Sweden, informality and honesty are signs of respect."},
+   {t:"You plan to open a presentation in Tokyo with a joke about your own CEO. You…",o:["Do it — humor always breaks the ice","Skip it and open with respect and thanks to your hosts","Tell a joke about Japanese culture instead"],p:[1,2,0],why:"Humor at a leader's or the host culture's expense is risky in Japan."}
+  ]},
+{ id:"2.5", day:2, title:"Which Country Am I?", time:8, type:"quiz",
+  choices:["Egypt","Germany","Japan","Sweden","USA","China","Saudi Arabia","Mexico"],
+  blurb:"A quick quiz: match 8 workplace profiles to their country.",
+  instr:"Read each workplace profile and pick the country.",
+  items:[
+   {t:"Meetings start exactly on time, follow the agenda and end with clear written decisions. Feedback is direct and factual. Rules and quality standards are taken very seriously.",a:"Germany",why:"Low-context, clock time, high uncertainty avoidance"},
+   {t:"The boss is called by first name, everyone is expected to give an opinion, decisions are made by consensus, and long working hours are frowned upon.",a:"Sweden",why:"Very low power distance and masculinity"},
+   {t:"Individual stars are celebrated, people talk openly about their achievements, decisions are fast, and quarterly results matter a lot.",a:"USA",why:"Very high individualism, short-term focus"},
+   {t:"Silence in meetings is normal, \"yes\" may mean \"I heard you\", quality is obsessive, and long-term loyalty to the company is common.",a:"Japan",why:"High-context; very high uncertainty avoidance, masculinity and long-term orientation"},
+   {t:"Personal networks open doors, hierarchy is respected, plans look decades ahead, and people adapt quickly and pragmatically to change.",a:"China",why:"High power distance, collectivist (guanxi), very long-term, low uncertainty avoidance"},
+   {t:"Relationships and personal trust come first, the senior person decides, hospitality is generous, and religion shapes the working calendar. Hierarchy is very strong.",a:"Saudi Arabia",why:"Very high power distance, collectivist, relationship-based trust"},
+   {t:"People are warm and family-oriented, respect for the boss is high, rules and procedures give security, time is flexible, and humor helps in hard times.",a:"Egypt",why:"High power distance and uncertainty avoidance, collectivist, flexible time"},
+   {t:"Family and relationships are central, hierarchy is respected, people enjoy life and celebrations, and deadlines are often flexible.",a:"Mexico",why:"High power distance, collectivist, very high indulgence"}
+  ]},
+/* ---------------- DAY 3 ---------------- */
+{ id:"3.1", day:3, title:"Left-Brain or Right-Brain Thinker?", time:8, type:"pair",
+  blurb:"Logical and analytical, creative and intuitive — or both?",
+  instr:"For each pair, choose the statement that describes you better. (Both sides of the brain work together — treat this as a mirror of thinking preferences, not science.)",
+  items:[
+   ["I prefer facts and figures","I prefer stories and images"],["I like step-by-step instructions","I like to see the big picture first"],["I make lists and plans","I go with the flow"],["I decide with logic","I decide with my gut feeling"],["I remember names","I remember faces"],["I like clear right or wrong answers","I like open questions with many answers"],
+   ["I prefer working alone on a task","I prefer brainstorming with others"],["I read the instructions before building something","I start building and figure it out"],["I'm good with details","I'm good at seeing patterns and connections"],["I like routine","I like variety and surprises"],["I analyse a problem by breaking it into parts","I solve a problem by imagining the whole solution"],["I express myself best in words and numbers","I express myself best in pictures, metaphors or movement"]
+  ]},
+{ id:"3.2", day:3, title:"My Pressure Profile", time:10, type:"scale", n:5, ends:["Never","Almost always"],
+  blurb:"The \"dark side\": how you behave under stress — and how it can derail you.",
+  instr:"When you're under real pressure, how often do you do these? 1 = never · 5 = almost always. (Inspired by the idea of leadership derailers, e.g. Hogan — a simple self-check, not the Hogan test.)",
+  items:[
+   {k:"Away",t:"I become moody or lose my temper."},{k:"Away",t:"I withdraw and avoid people."},{k:"Away",t:"I become suspicious of others' intentions."},{k:"Away",t:"I avoid decisions for fear of making a mistake."},
+   {k:"Against",t:"I become overconfident and stop listening."},{k:"Against",t:"I take bigger risks than I should."},{k:"Against",t:"I push my ideas through, even if others disagree."},{k:"Against",t:"I try to charm people instead of facing the problem."},
+   {k:"Toward",t:"I become a perfectionist and micromanage."},{k:"Toward",t:"I say yes to everything to please my boss."},{k:"Toward",t:"I follow the rules even when they don't make sense."},{k:"Toward",t:"I hide my disagreement to avoid conflict."}
+  ]},
+{ id:"3.3", day:3, title:"My Emotional Intelligence", time:8, type:"scale", n:5, ends:F5,
+  blurb:"Your EQ level across Goleman's five components.",
+  instr:"How often is each statement true for you? 1 = never · 5 = always.",
+  items:[
+   {k:"Self-awareness",t:"I know what triggers my anger or frustration."},{k:"Self-awareness",t:"I can name my emotions as I feel them."},
+   {k:"Self-regulation",t:"I stay calm when someone criticizes me."},{k:"Self-regulation",t:"I think before I react in difficult moments."},
+   {k:"Motivation",t:"I stay motivated even when things go wrong."},{k:"Motivation",t:"I bounce back quickly from disappointment."},
+   {k:"Empathy",t:"I notice how others feel, even if they don't say it."},{k:"Empathy",t:"I can see a situation from another person's point of view."},
+   {k:"Social skills",t:"I handle conflict without damaging relationships."},{k:"Social skills",t:"I easily build rapport with new people, including from other cultures."}
+  ]},
+{ id:"3.4", day:3, title:"Growth or Fixed Mindset?", time:5, type:"pair",
+  blurb:"Do you see ability as fixed — or as something you build? (Dweck)",
+  instr:"For each pair, choose the statement you agree with more.",
+  items:[
+   ["Talent is mostly something you're born with","Talent can be developed with effort"],["I avoid tasks where I might fail","I like challenges, even if I might fail"],["Criticism feels like a personal attack","Criticism is useful information"],["If I have to try hard, I'm probably not good at it","Effort is how I get good at things"],
+   ["Other people's success makes me feel threatened","Other people's success inspires me"],["Mistakes show my limits","Mistakes show me what to learn next"],["I'm either good with other cultures or I'm not","I can learn to work well with any culture"],["I stick to what I already do well","I keep learning new skills"]
+  ]},
+{ id:"3.5", day:3, title:"My Resilience Battery", time:6, type:"scale", n:4, ends:["Rarely","Almost always"],
+  blurb:"How charged is your resilience battery right now?",
+  instr:"Rate each statement: 1 = rarely · 2 = sometimes · 3 = often · 4 = almost always.",
+  items:[
+   {k:"R",t:"I sleep at least 7 hours on most nights, even when travelling."},{k:"R",t:"I exercise or move at least three times a week."},{k:"R",t:"I have a daily moment of quiet, reflection or prayer."},{k:"R",t:"I have someone who tells me the hard truth."},{k:"R",t:"I know my core values and use them when deciding."},
+   {k:"R",t:"I recover within a day or two after a setback."},{k:"R",t:"I can switch off from work in the evening."},{k:"R",t:"I notice my stress signals early."},{k:"R",t:"I ask for help when I need it."},{k:"R",t:"I feel my work has meaning."}
+  ]},
+{ id:"3.6", day:3, title:"The Mirror: My Summary", time:15, type:"reflect",
+  blurb:"All your results on one page — plus your commitment.",
+  instr:"Your results from the other assessments appear automatically. Complete your reflection and commitment, then submit.",
+  items:[
+   {k:"strengths",t:"My three biggest strengths as a leader are…"},
+   {k:"derailer",t:"The pattern that could derail me (especially under pressure or abroad) is…"},
+   {k:"surprise",t:"One thing that surprised me about myself…"},
+   {k:"partner",t:"What my partner recognized (or didn't) in my results…"},
+   {k:"start",t:"START doing…"},{k:"stop",t:"STOP doing…"},{k:"keep",t:"KEEP doing…"},
+   {k:"accountability",t:"Who will hold me accountable, and our check-in date"}
+  ]},
+/* ---------------- DAY 4 ---------------- */
+{ id:"4.1", day:4, title:"The Generation Stereotype Check", time:6, type:"scale", n:5, ends:S5A,
+  blurb:"How strongly do you believe popular generational stereotypes — and what does the evidence say?",
+  instr:"Rate each statement from 1 (strongly disagree) to 5 (strongly agree). Answer honestly: there is no 'correct' opinion here.",
+  items:[
+   {k:"ST",t:"Young employees are less loyal than older employees were at their age.",why:"Changing jobs often in your twenties is a life-stage effect: older workers were mobile at 25 too."},
+   {k:"ST",t:"Gen Z doesn't want responsibility or leadership.",why:"Many young people reject today's stressful middle-manager job design, not leadership itself (Robert Walters 2024; Gallup 2025)."},
+   {k:"ST",t:"Older employees struggle to learn new technology.",why:"In 2024, 73% of Boomer and 85% of Gen Z knowledge workers brought their own AI tools to work (Microsoft & LinkedIn)."},
+   {k:"ST",t:"Young people can't handle criticism.",why:"Young employees often ask for MORE feedback; they reject feedback that is rare, vague or public, as most people do."},
+   {k:"ST",t:"Millennials and Gen Z work less hard than earlier generations.",why:"A meta-analysis of 20 studies found generational differences in work attitudes were small, often close to zero (Costanza et al., 2012)."},
+   {k:"ST",t:"Older employees resist change more than younger ones.",why:"Resistance usually reflects how change is introduced, job security and past experience, more than age."},
+   {k:"ST",t:"Young people care about flexibility more than pay.",why:"Deloitte 2025: Gen Z and Millennials want money, meaning AND well-being; the cost of living is a top worry."},
+   {k:"ST",t:"Experienced employees are too expensive to keep.",why:"BMW's older-worker line matched younger lines' productivity with higher quality, after small, cheap changes."},
+   {k:"ST",t:"You can predict what someone wants at work from their birth year.",why:"The US National Academies (2020) found generational categories cannot adequately inform management decisions."},
+   {k:"ST",t:"A young manager can't earn the respect of much older team members.",why:"Respect comes from competence, fairness and humility; asking experienced colleagues for advice builds it fast."}
+  ]},
+{ id:"4.2", day:4, title:"My Career Deal", time:8, type:"choice",
+  blurb:"Security, flexibility, growth or purpose: what do you want most from work right now?",
+  instr:"For each question, choose the ONE answer closest to you today.",
+  items:[
+   {t:"I would accept a new job offer mainly because it…",o:["Offers a permanent contract and good benefits","Lets me choose when and where I work","Helps me learn fast and grow","Lets me do work that really matters to me"]},
+   {t:"My ideal manager…",o:["Keeps things stable and predictable","Trusts me to organize my own time","Challenges me and gives frequent feedback","Connects my work to a bigger purpose"]},
+   {t:"I would leave a job if…",o:["The company felt financially unstable","I lost my flexibility","I stopped learning","The work felt meaningless"]},
+   {t:"The reward that motivates me most is…",o:["A pay rise or bonus","Extra days off or more remote days","A training course or a new challenge","A project I truly believe in"]},
+   {t:"Success in five years means…",o:["Financial security for me and my family","A life where work fits around my life","A bigger role and stronger skills","Having made a real difference"]},
+   {t:"I feel most stressed when…",o:["Money or job security is uncertain","Others control my schedule","I'm bored or stuck","I do work I don't believe in"]},
+   {t:"If I could choose only one, I'd take…",o:["A 15% pay rise","A four-day week at the same pay","A role abroad in a new market","Leading a project with social impact"]},
+   {t:"What I value most in an employer is…",o:["Stability and a strong reputation","Modern, flexible ways of working","Training and clear career paths","Its values and impact on society"]}
+  ]},
+{ id:"4.3", day:4, title:"How I Like to Communicate", time:6, type:"pair",
+  blurb:"Your feedback and communication preferences: formal and structured, or fast and informal?",
+  instr:"For each pair, choose the statement that describes you better. Questions 1–5 are about feedback, 6–10 about communication.",
+  items:[
+   ["I prefer feedback in a scheduled review","I prefer quick feedback in the moment"],["I like detailed, written feedback","I like short, spoken feedback"],["Recognition should mean a reward or promotion","A specific \"thank you\" means a lot to me"],["Feedback should come from my manager","Feedback from peers and juniors is just as useful"],["Tell me what to do","Tell me why we're doing it"],
+   ["I prefer a call or a meeting","I prefer chat or voice notes"],["Formal emails with greetings show respect","Short messages save everyone time"],["I use titles until invited to use first names","I use first names from day one"],["Meetings should follow a clear agenda","Quick, informal check-ins work better"],["I reply when I have a complete answer","I reply fast, even with a partial answer"]
+  ]},
+{ id:"4.4", day:4, title:"The Age-Inclusive Leader", time:6, type:"scale", n:5, ends:F5,
+  blurb:"How age-inclusive are your leadership habits?",
+  instr:"How often do you do each of these as a leader or colleague? 1 = never · 5 = always.",
+  items:[
+   {k:"Fair",t:"I make hiring and promotion decisions without considering age."},{k:"Fair",t:"I avoid jokes and labels about age groups (\"boomer\", \"kids\")."},{k:"Fair",t:"I ask people what they want rather than guessing from their age."},{k:"Fair",t:"I offer training and stretch projects to people of all ages."},{k:"Fair",t:"I notice when I assume someone is \"too old\" or \"too young\" for something."},
+   {k:"Bridge",t:"I mix ages when I build project teams."},{k:"Bridge",t:"I make sure experienced people share their know-how before they leave."},{k:"Bridge",t:"I learn from younger colleagues (for example on technology or customers)."},{k:"Bridge",t:"I adapt my feedback and communication style to each person."},{k:"Bridge",t:"I explain the \"why\" behind my decisions."}
+  ]},
+{ id:"4.5", day:4, title:"Myth or Evidence?", time:6, type:"quiz",
+  choices:["Myth","Half-truth","Evidence"],
+  blurb:"A 10-question quiz: can you tell generational myths from research findings?",
+  instr:"For each statement, decide: is it a Myth, a Half-truth, or supported by Evidence?",
+  items:[
+   {t:"Generational differences in job satisfaction and commitment are large.",a:"Myth",why:"A meta-analysis of 20 studies found them small, often close to zero (Costanza et al., 2012)."},
+   {t:"Most knowledge workers of every generation brought their own AI tools to work in 2024.",a:"Evidence",why:"From 73% of Boomers to 85% of Gen Z (Microsoft & LinkedIn Work Trend Index 2024)."},
+   {t:"Gen Z doesn't want to lead.",a:"Half-truth",why:"52% of UK Gen Z don't want middle management as it is designed today, but that is not the same as rejecting leadership."},
+   {t:"Young people change jobs more than older people mainly because of their generation.",a:"Myth",why:"It is mainly a life-stage effect: people have always moved more in their twenties."},
+   {t:"In the US, early-career workers in AI-exposed jobs have seen employment fall since generative AI spread.",a:"Evidence",why:"Workers aged 22–25 in the most exposed jobs are now 19% below where they would be had they kept pace with less-exposed peers (Stanford, revised August 2026)."},
+   {t:"Older workers are always less productive.",a:"Myth",why:"BMW's older-worker line matched younger lines' productivity with higher quality."},
+   {t:"Gen Z can't take criticism.",a:"Myth",why:"They often ask for more feedback; they dislike feedback that is rare, vague or public."},
+   {t:"Generational labels mean the same thing in every country.",a:"Myth",why:"Formative events, economies and demography differ: a Gen Z in Cairo did not grow up in the same world as one in Munich."},
+   {t:"Managers under 35 saw their engagement fall in 2024.",a:"Evidence",why:"Gallup 2025: young managers' engagement fell 5 points; global manager engagement fell from 30% to 27%."},
+   {t:"Flexibility matters only to young workers.",a:"Myth",why:"Parents, carers and long commuters of every age often need flexibility most. It is a life-stage need."}
+  ]}
+];
+
+/* =========================================================
+   3) SCORING — each returns {headline, sub, scores, blocks[]}
+   ========================================================= */
+const sumBy = (it, ans, key) => it.reduce((a, q, i) => a + (q.k === key ? ans[i] : 0), 0);
+const count = (ans, v) => ans.filter(x => x === v).length;
+const band = (v, bands) => bands.find(b => v >= b[0] && v <= b[1]);
+
+const SCORE = {
+"1.1"(a, ans){
+  const L = "ABCD", c = [0,1,2,3].map(i => count(ans, i));
+  const styles = [
+    ["The Director","You give clear direction, move fast and deliver results. People always know what to do.","Your strength becomes a weakness when people stop thinking for themselves. Once a week, ask \"What do you suggest?\" before giving your answer."],
+    ["The Visionary","You inspire people with a picture of the future and a sense of purpose.","A vision needs a plan. Turn your big picture into three clear priorities and check progress every month."],
+    ["The Coach","You grow people. You listen, ask questions and invest in their development.","Coaching takes time; in a crisis people need direction. Learn to switch to a clear \"do this now\" when speed matters."],
+    ["The Collaborator","You involve people, build consensus and create ownership.","Not every decision needs a meeting. Agree with your team which decisions you'll make alone and which you'll make together."]];
+  const max = Math.max(...c), top = c.map((v,i)=>v===max?i:-1).filter(i=>i>=0);
+  const order = [0,1,2,3].sort((x,y)=>c[y]-c[x]);
+  const scores = {A_Director:c[0],B_Visionary:c[1],C_Coach:c[2],D_Collaborator:c[3]};
+  let headline, sub, blocks = [];
+  if (max <= 3) {
+    headline = "The Adapter"; sub = "No style above 3 — you change style depending on the situation.";
+    blocks.push({chip:"Your result",label:"The Adapter",meaning:"Flexibility is your strength.",tip:"Make sure your team can still predict how you'll react. Explain why you are switching style."});
+  } else if (top.length > 1) {
+    headline = "Blended: " + top.map(i=>styles[i][0].replace("The ","")).join(" + ");
+    sub = "You use two (or more) styles naturally.";
+    blocks.push({chip:"Your result",label:"A blended leader",meaning:"Two styles came out equally strong.",tip:"Notice which situations trigger each style — and whether that choice serves the team or just your comfort."});
+    top.forEach(i => blocks.push({chip:"Style "+L[i]+" · "+c[i]+" answers",label:styles[i][0],meaning:styles[i][1],tip:styles[i][2]}));
+  } else {
+    const m = order[0], b = order[1];
+    headline = styles[m][0]; sub = "Main style " + L[m] + " (" + c[m] + " answers) · back-up style: " + styles[b][0] + " (" + c[b] + ")";
+    blocks.push({chip:"Main style · "+c[m]+" answers",label:styles[m][0],meaning:styles[m][1],tip:styles[m][2]});
+    blocks.push({chip:"Back-up style · "+c[b]+" answers",label:styles[b][0],meaning:styles[b][1],tip:styles[b][2]});
+  }
+  blocks.push({chip:"Across cultures",label:"Where your style travels",meaning:"Directors are often accepted in high power-distance countries (Egypt, Saudi Arabia, India); Coaches and Collaborators fit low power-distance countries (Sweden, Netherlands). Visionaries work almost everywhere if the story is told in local terms."});
+  return {headline, sub, scores, blocks, bars:[["Director (A)",c[0],10],["Visionary (B)",c[1],10],["Coach (C)",c[2],10],["Collaborator (D)",c[3],10]]};
+},
+"1.2"(a, ans){
+  const S = sumBy(a.items, ans, "S"), F = sumBy(a.items, ans, "F");
+  let r;
+  if (S <= 12 && F <= 12) r = ["\"Inspire me\"","Structure and freedom matter less to you than meaning and relationships.","Tell your manager what motivates you — purpose, recognition, learning — so they can lead you well."];
+  else if (S - F >= 3) r = ["\"Guide me\"","You work best with clear direction, structure and a manager who decides.","Tell your manager what clarity you need — goals, deadlines, priorities. Also practise taking one decision a week on your own."];
+  else if (F - S >= 3) r = ["\"Trust me\"","You work best with autonomy and a manager who sets the goal, then steps back.","Earn freedom by being predictable: send a short weekly update so your manager doesn't feel the need to check on you."];
+  else r = ["\"Partner with me\"","You want a balance: clear goals, a voice in decisions and freedom in how you work.","Agree with your manager up front: \"Where do you want me to ask first, and where can I just act?\""];
+  return {headline:r[0], sub:"Structure " + S + " · Freedom " + F, scores:{Structure:S,Freedom:F},
+    blocks:[{chip:"Your result",label:r[0],meaning:r[1],tip:r[2]},{chip:"Golden rule",label:"Do you lead others the way you want to be led?",meaning:"Most people do. Compare with your Leadership Style (1.1): do you give your team what you want — or what they need?"}],
+    bars:[["Structure",S,25],["Freedom",F,25]]};
+},
+"1.3"(a, ans){
+  const T = sumBy(a.items, ans, "T"), P = sumBy(a.items, ans, "P"), th = T >= 18, ph = P >= 18;
+  const map = {
+    "11":["The Team Builder","You deliver results and care for people — the ideal balance.","Protect this balance under pressure, when most leaders slide to task only. Keep one-to-ones even in busy weeks."],
+    "10":["The Driver","You deliver results but may wear people out.","Add one \"people\" habit: start each meeting by asking how people are, and thank one person every day."],
+    "01":["The Harmonizer","People love working with you, but results may slip.","Set three clear, measurable goals for your team this quarter and review them every two weeks."],
+    "00":["The Bystander","You may be overloaded, disengaged or new to leading.","Choose one task habit and one people habit and practise them for 30 days. Ask a mentor for support."]};
+  const r = map[(th?1:0)+""+(ph?1:0)];
+  return {headline:r[0], sub:"Task " + T + (th?" (high)":" (low)") + " · People " + P + (ph?" (high)":" (low)"), scores:{Task:T,People:P},
+    blocks:[{chip:"Your result",label:r[0],meaning:r[1],tip:r[2]},{chip:"Across cultures",label:"Task-first or people-first?",meaning:"Task-first leadership is common in the USA, Germany and Switzerland; people-first leadership is expected in Egypt, the Gulf, Latin America and much of Asia, where trust comes before business."}],
+    bars:[["Task",T,25,18],["People",P,25,18]]};
+},
+"1.4"(a, ans){
+  const B = count(ans, 1);
+  const r = band(B, [[0,3,"Mainly a Manager","You create order, reliability and results. Organizations can't run without you.","Grow your leadership side: once a month, share with your team why the work matters, not just what to do."],
+                      [4,6,"A Manager–Leader","You balance running today's business with shaping tomorrow's.","Notice which side you use under pressure. Book one hour a week of \"leader time\" for the future, people and direction."],
+                      [7,10,"Mainly a Leader","You inspire, set direction and drive change.","Vision without execution is just a dream. Partner with a strong manager, or build a simple tracking system for your ideas."]]);
+  return {headline:r[2], sub:"Leader (B) answers: " + B + " / 10", scores:{Leader_B:B,Manager_A:10-B},
+    blocks:[{chip:"Your result",label:r[2],meaning:r[3],tip:r[4]},{chip:"Remember (Kotter)",label:"You need both",meaning:"Management copes with complexity; leadership copes with change. The best people do both — and know which one the moment needs."}],
+    bars:[["Manager (A)",10-B,10],["Leader (B)",B,10]]};
+},
+"2.1"(a, ans, extra){
+  const keys = ["PDI","IDV","MAS","UAI","LTO","IVR"];
+  const info = {
+    PDI:["Hierarchical — respect the boss, decisions come from the top","Egalitarian — flat, consultative, the boss is accessible","Working with a low-PDI culture: invite open challenge and don't over-rely on titles.","Working with a high-PDI culture: respect titles, disagree in private, go through the right levels."],
+    IDV:["\"I\" culture — personal achievement, direct speech","\"We\" culture — group loyalty, harmony, relationships","Working with a \"we\" culture: build relationships first and praise the team.","Working with an \"I\" culture: be direct, recognize individuals, separate work from personal ties."],
+    MAS:["Competitive — winning, achievement, status","Cooperative — consensus, quality of life, caring","Working with a cooperative culture: soften targets and value wellbeing.","Working with a competitive culture: show ambition and results; don't be shy about success."],
+    UAI:["Rule-loving — plans, detail, stability","Flexible — comfortable with ambiguity and change","Working with a flexible culture: allow experiments and quick changes.","Working with a rule-loving culture: give detail, plans and clear rules before changing anything."],
+    LTO:["Long-term — patience, perseverance, the future","Short-term — tradition, quick results","Working with a short-term culture: show quick wins along the way.","Working with a long-term culture: explain the 5–10 year view and be patient."],
+    IVR:["Indulgent — enjoyment, leisure, optimism","Restrained — discipline, strict norms","Working with a restrained culture: be more formal and reserved.","Working with an indulgent culture: allow celebrations, humor and work-life balance."]};
+  const country = extra.country || "";
+  const off = HOF[country];
+  const scores = {Country:country}, blocks = [], bars = [];
+  let highs = [];
+  keys.forEach((k, i) => {
+    const v = sumBy(a.items, ans, k);
+    const lvl = v >= 11 ? "High" : v >= 8 ? "Medium" : "Low";
+    scores[k] = v; scores[k + "_level"] = lvl;
+    if (lvl === "High") highs.push(DIMS[i]);
+    const official = off ? off[i] : null;
+    let meaning = lvl === "High" ? info[k][0] : lvl === "Low" ? info[k][1] : "Balanced — somewhere between: " + info[k][0].split(" — ")[0].toLowerCase() + " and " + info[k][1].split(" — ")[0].toLowerCase() + ".";
+    if (official !== null) meaning += (/[.!]$/.test(meaning) ? " " : ". ") + "Official Hofstede score for " + country + ": " + official + " (" + (official > 60 ? "high" : official < 40 ? "low" : "medium") + ").";
+    const tip = lvl === "High" ? info[k][2] : lvl === "Low" ? info[k][3] : "Watch for differences inside your country (region, generation, industry) — and read each partner as an individual.";
+    blocks.push({chip:DIMS[i] + " · " + v + "/15 · " + lvl, label:lvl === "Medium" ? "Medium" : meaning.split(" — ")[0], meaning, tip});
+    bars.push([DIMS[i], Math.round((v - 3) / 12 * 100), 100, off ? off[i] : null]);
+  });
+  return {headline: (country ? country + ": " : "") + (highs.length ? "High on " + highs.join(", ") : "No dimension scored high"),
+    sub:"Bars show your answers on a 0–100 scale; the gold marker is the official Hofstede score" + (off ? "." : " (choose a listed country to see it)."),
+    scores, blocks, bars, barsPct:true};
+},
+"2.2"(a, ans){
+  const ks = ["Drive","Knowledge","Strategy","Action"], v = ks.map(k => sumBy(a.items, ans, k)), T = v.reduce((x,y)=>x+y,0);
+  const r = band(T, [[48,60,"Global Navigator","You adapt naturally across cultures.","Become a cultural mentor for colleagues going abroad, and keep testing yourself in new cultures."],
+                     [36,47,"Global Learner","A good base with room to grow.","Pick your lowest area below and work on it deliberately for the next three months."],
+                     [12,35,"Global Beginner","Cross-cultural work may feel stressful.","Start small: learn the basics (greetings, decision style, attitude to time) of one country you work with before your next meeting."]]);
+  const tips = {Drive:"Link culture to your own goals: \"How will understanding this market help my career?\" Seek one international project.",
+    Knowledge:"Read one country profile (e.g. on the Hofstede website) before every new partnership. Ask locals about history and religion.",
+    Strategy:"Before meetings: plan. During: watch reactions. After: ask \"What surprised me?\" Write it down.",
+    Action:"Practise one change at a time — slow down, pause longer, or soften criticism — and watch the effect."};
+  const min = Math.min(...v), low = ks.filter((k,i)=>v[i]===min);
+  const blocks = [{chip:"Total " + T + " / 60",label:r[2],meaning:r[3],tip:r[4]}];
+  ks.forEach((k,i)=>{ if (v[i] <= 9 || low.includes(k)) blocks.push({chip:"CQ " + k + " · " + v[i] + "/15" + (v[i] <= 9 ? " · development area" : " · your lowest"),label:"CQ " + k,meaning:{Drive:"Your interest and confidence in working across cultures.",Knowledge:"Your understanding of how cultures differ.",Strategy:"Planning, noticing and checking your assumptions.",Action:"Adapting how you speak and behave."}[k],tip:tips[k]}); });
+  return {headline:r[2], sub:"Total CQ " + T + " / 60 · lowest area: " + low.join(", "), scores:{Total:T,Drive:v[0],Knowledge:v[1],Strategy:v[2],Action:v[3]}, blocks,
+    bars:ks.map((k,i)=>["CQ " + k, v[i], 15, 9])};
+},
+"2.3"(a, ans){
+  const C = ans.slice(0,6).filter(x=>x===0).length, Tm = ans.slice(6).filter(x=>x===0).length;
+  const c = band(C, [[5,6,"Direct (low-context)","Meaning is in the words. Typical of Germany, Netherlands, USA, Switzerland, Scandinavia.","With indirect cultures, soften your \"no\", give feedback privately and ask open questions like \"What concerns might people have?\""],
+                     [3,4,"Flexible communicator","You can switch styles.","Use your flexibility consciously: decide before each meeting which style the audience needs."],
+                     [0,2,"Indirect (high-context)","Meaning is in the context and relationship. Typical of Japan, China, Egypt, the Gulf, much of Asia and Latin America.","With direct cultures, state your main point early, say \"no\" clearly, and don't take bluntness personally."]]);
+  const t = band(Tm, [[5,6,"Clock time (monochronic)","One thing at a time; deadlines are promises. Typical of Germany, Switzerland, USA, UK, Japan.","With flexible-time cultures, build in buffers, follow up personally, and invest in the relationship — it protects the deadline."],
+                      [3,4,"Balanced time","You move between both styles.","Agree time rules openly with your team: what does \"on time\" mean for us?"],
+                      [0,2,"Event time (polychronic)","Relationships before schedules. Typical of the Middle East, Latin America, India, Southern Europe.","With clock-time cultures, treat deadlines as promises, confirm any delay early, and keep to the agenda."]]);
+  return {headline:c[2] + " · " + t[2], sub:"Communication A-score " + C + "/6 · Time A-score " + Tm + "/6",
+    scores:{Communication_A:C,Communication_style:c[2],Time_A:Tm,Time_style:t[2]},
+    blocks:[{chip:"Communication · " + C + "/6",label:c[2],meaning:c[3],tip:c[4]},{chip:"Time · " + Tm + "/6",label:t[2],meaning:t[3],tip:t[4]}],
+    bars:[["Directness",C,6],["Clock time",Tm,6]]};
+},
+"2.4"(a, ans){
+  const pts = ans.map((x,i)=>a.items[i].p[x]), T = pts.reduce((x,y)=>x+y,0);
+  const r = band(T, [[13,16,"Culturally sensitive","You read situations well and adapt with respect.","Share your knowledge: brief colleagues before cross-cultural meetings."],
+                     [8,12,"Culturally aware","You get most situations right.","Review the situations where you scored 0 or 1. Ask a colleague from that culture to explain the norm."],
+                     [0,7,"Culturally at risk","You may be offending people without knowing it.","Before each cross-cultural meeting, ask yourself: How do they see hierarchy? How direct are they? What is sacred here?"]]);
+  const rows = a.items.map((q,i)=>{const best=q.p.indexOf(2);return "<tr><td>"+(i+1)+"</td><td>"+"ABC"[ans[i]]+"</td><td>"+pts[i]+"</td><td>"+"ABC"[best]+"</td><td>"+q.why+"</td></tr>";}).join("");
+  return {headline:r[2], sub:"Score " + T + " / 16", scores:{Total:T},
+    blocks:[{chip:"Score " + T + " / 16",label:r[2],meaning:r[3],tip:r[4]}],
+    extraHTML:"<div class='rblock'><h3>Answer key</h3><table class='k'><tr><th>#</th><th>You</th><th>Points</th><th>Best</th><th>Why</th></tr>"+rows+"</table></div>",
+    bars:[["Sensitivity score",T,16]]};
+},
+"2.5"(a, ans){
+  const ok = ans.map((x,i)=>a.choices[x]===a.items[i].a), T = ok.filter(Boolean).length;
+  const r = band(T, [[7,8,"Culture expert","Excellent cultural radar.","Remember: these are country averages. Always check them against the real person in front of you."],
+                     [4,6,"Good cultural radar","You spotted most of the patterns.","Look at the clues for the ones you missed — which dimension confused you?"],
+                     [0,3,"Keep exploring","The patterns are still new to you.","Go back to the Hofstede scores in 2.1 and compare them with the profiles."]]);
+  const rows = a.items.map((q,i)=>"<tr><td>"+(i+1)+"</td><td>"+a.choices[ans[i]]+(ok[i]?" ✓":" ✗")+"</td><td><b>"+q.a+"</b></td><td>"+q.why+"</td></tr>").join("");
+  return {headline:r[2], sub:T + " / 8 correct", scores:{Correct:T},
+    blocks:[{chip:T + " / 8",label:r[2],meaning:r[3],tip:r[4]}],
+    extraHTML:"<div class='rblock'><h3>Answers</h3><table class='k'><tr><th>#</th><th>Your guess</th><th>Answer</th><th>Clues</th></tr>"+rows+"</table></div>",
+    bars:[["Correct",T,8]]};
+},
+"3.1"(a, ans){
+  const A_ = count(ans, 0);
+  const r = band(A_, [[9,12,"Left-brain thinker","Logical and analytical. Strengths: analysis, detail, planning, accuracy. Watch out for: missing the big picture, people and creative options.","Before deciding, ask: \"What would a creative person suggest here?\" Use visuals and stories when you present."],
+                      [5,8,"Whole-brain thinker","Balanced: you switch between logic and creativity — but you may hesitate between the two.","Know which mode each task needs: analysis for budgets, imagination for strategy."],
+                      [0,4,"Right-brain thinker","Creative and intuitive. Strengths: ideas, vision, patterns, empathy. Watch out for: details, follow-through, structure.","Pair your ideas with a simple plan: who, what, by when. Work with a detail-oriented colleague."]]);
+  return {headline:r[2], sub:"Left (A) answers " + A_ + " / 12", scores:{Left_A:A_,Right_B:12-A_},
+    blocks:[{chip:"A-score " + A_ + "/12",label:r[2],meaning:r[3],tip:r[4]},{chip:"Leadership link",label:"Teams need both",meaning:"Look around your group — who is your opposite? That person may be your most valuable partner."}],
+    bars:[["Left (logical)",A_,12],["Right (creative)",12-A_,12]]};
+},
+"3.2"(a, ans){
+  const ks = ["Away","Against","Toward"], v = ks.map(k=>sumBy(a.items, ans, k));
+  const info = {
+    Away:["Moving Away","Under pressure you pull back: go quiet, become moody, distrustful or overly cautious. Others may see a leader who disappears just when the team needs them.","Name it early: \"I'm stressed — give me 10 minutes.\" Then come back. Agree with a trusted colleague that they'll tell you when you go quiet."],
+    Against:["Moving Against","Under pressure you push forward: overconfident, risky, dominant, or charming instead of honest. Others may see a leader who stops listening.","Before big decisions under pressure, ask two people: \"What am I missing?\" — and wait for the answer."],
+    Toward:["Moving Toward","Under pressure you over-comply: perfectionist, people-pleasing, rule-bound or silent. Others may see a leader who can't say no.","Practise one respectful \"no\" or one honest disagreement this week: \"I see it differently, and here's why…\""]};
+  const lvl = x => x >= 14 ? "High risk" : x >= 10 ? "Moderate" : "Low";
+  const max = Math.max(...v), anyHigh = v.some(x=>x>=14);
+  const top = ks.filter((k,i)=>v[i]===max);
+  const blocks = [];
+  if (!anyHigh && max < 10) blocks.push({chip:"All patterns low",label:"You stay fairly steady",meaning:"A calm, predictable leader under pressure.",tip:"Keep your recovery routines strong — very high stress can still bring out a pattern you haven't seen yet."});
+  ks.forEach((k,i)=>{ if (v[i] >= 10 || top.includes(k)) blocks.push({chip:info[k][0] + " · " + v[i] + "/20 · " + lvl(v[i]),label:info[k][0],meaning:info[k][1],tip:info[k][2]}); });
+  blocks.push({chip:"Key message",label:"Strengths overused become derailers",meaning:"Confidence becomes arrogance; care becomes people-pleasing; caution becomes paralysis."});
+  return {headline:(!anyHigh && max < 10) ? "Steady under pressure" : "Highest pattern: " + top.map(k=>info[k][0]).join(" & "),
+    sub:"Away " + v[0] + " · Against " + v[1] + " · Toward " + v[2] + " (14+ = high risk)",
+    scores:{Moving_Away:v[0],Moving_Against:v[1],Moving_Toward:v[2],Highest:top.map(k=>info[k][0]).join(" & ")}, blocks,
+    bars:[["Moving Away",v[0],20,14],["Moving Against",v[1],20,14],["Moving Toward",v[2],20,14]]};
+},
+"3.3"(a, ans){
+  const ks = ["Self-awareness","Self-regulation","Motivation","Empathy","Social skills"], v = ks.map(k=>sumBy(a.items, ans, k)), T = v.reduce((x,y)=>x+y,0);
+  const r = band(T, [[40,50,"High EQ","A real leadership strength.","Use it deliberately: be the person who calms tense meetings and reads the room for others."],
+                     [30,39,"Solid EQ","With clear areas to grow.","Focus on your lowest component below for one month."],
+                     [10,29,"Developing EQ","Emotions may be running you.","Start with self-awareness: three times a day, stop and name what you feel."]]);
+  const tips = {"Self-awareness":"Keep a one-line emotion journal each evening: \"Today I felt ___ when ___.\"",
+    "Self-regulation":"Use the 90-second rule: wait before replying to anything that makes you angry. Try box breathing (in 4 · hold 4 · out 4 · hold 4).",
+    "Motivation":"Reconnect with your \"why\": write down what makes your work meaningful and read it when things go wrong.",
+    "Empathy":"In your next three conversations, listen without interrupting and summarize what the other person feels before you answer.",
+    "Social skills":"Once a week, have a coffee with someone outside your team or culture. Practise asking, not telling."};
+  const min = Math.min(...v);
+  const blocks = [{chip:"Total " + T + " / 50",label:r[2],meaning:r[3],tip:r[4]}];
+  ks.forEach((k,i)=>{ if (v[i] <= 6 || v[i] === min) blocks.push({chip:k + " · " + v[i] + "/10" + (v[i] <= 6 ? " · growth area" : " · your lowest"),label:k,meaning:"",tip:tips[k]}); });
+  const sc = {Total:T}; ks.forEach((k,i)=>sc[k.replace(/[- ]/g,"_")] = v[i]);
+  return {headline:r[2], sub:"Total EQ " + T + " / 50", scores:sc, blocks, bars:ks.map((k,i)=>[k,v[i],10,7])};
+},
+"3.4"(a, ans){
+  const B = count(ans, 1);
+  const r = band(B, [[7,8,"Growth mindset","You see ability as something you build. You learn from setbacks.","Help your team think this way: praise effort and learning, not just talent and results."],
+                     [4,6,"Mixed mindset","A growth mindset in some areas and a fixed one in others.","Find your fixed area (e.g. \"I'm not a numbers person\"). Add the word \"yet\": \"I'm not a numbers person… yet.\""],
+                     [0,3,"Fixed mindset","You may avoid challenges and feel threatened by feedback.","Choose one small challenge this month that you might fail at — and treat the result as information, not a verdict on you."]]);
+  return {headline:r[2], sub:"Growth (B) answers " + B + " / 8", scores:{Growth_B:B},
+    blocks:[{chip:"B-score " + B + "/8",label:r[2],meaning:r[3],tip:r[4]}], bars:[["Growth answers",B,8]]};
+},
+"3.5"(a, ans){
+  const T = ans.reduce((x,y)=>x+y,0);
+  const r = band(T, [[33,40,"Fully charged","You have strong routines and support.","Protect your routines during travel and busy seasons — that's when they break first."],
+                     [25,32,"Half charged","You cope, but some areas are draining you.","Pick your two lowest statements and fix one small thing for each this week (e.g. no laptop after 9 pm)."],
+                     [17,24,"Running low","You're likely tired and more reactive than usual.","Talk to someone you trust this week. Rebuild one anchoring routine — sleep is the fastest win."],
+                     [10,16,"Close to empty","You may be heading toward burnout.","Please don't wait: speak to your manager, HR or a professional. Resilience is designed, not inherited — and it starts with asking for help."]]);
+  const lows = a.items.map((q,i)=>[q.t,ans[i]]).filter(x=>x[1]<=2).map(x=>x[0]);
+  const blocks = [{chip:"Battery " + T + " / 40",label:r[2],meaning:r[3],tip:r[4]}];
+  if (lows.length) blocks.push({chip:"Your low statements",label:"Where your battery drains",meaning:lows.join(" · ")});
+  blocks.push({chip:"Three pillars",label:"Resilience is designed, not inherited",meaning:"Anchoring routines · trusted advisors · values clarity. Which one is missing for you?"});
+  return {headline:r[2], sub:"Battery " + T + " / 40", scores:{Total:T}, blocks, bars:[["Battery",T,40]]};
+},
+"3.6"(a, ans){
+  const res = getResults();
+  const rows = A.filter(x=>x.id!=="3.6" && x.day<=3).map(x=>"<tr><td>"+x.id+"</td><td>"+x.title+"</td><td><b>"+(res[x.id] ? esc(res[x.id].headline) : "<span class='note'>not done yet</span>")+"</b></td></tr>").join("");
+  const scores = {}; A.forEach(x=>{ if (x.id!=="3.6" && x.day<=3) scores["R_"+x.id] = res[x.id] ? res[x.id].headline : ""; });
+  return {headline:"My Mirror", sub:"Your results and your commitment", scores,
+    blocks:[{chip:"Commitment",label:"Start · Stop · Keep",meaning:"START: " + (ans[4]||"—") + " · STOP: " + (ans[5]||"—") + " · KEEP: " + (ans[6]||"—"),tip:"Share this page with your accountability partner and book your 30-day check-in now."}],
+    extraHTML:"<div class='rblock'><h3>All my results</h3><table class='k'><tr><th>#</th><th>Assessment</th><th>My result</th></tr>"+rows+"</table></div>"};
+},
+"4.1"(a, ans){
+  const T = ans.reduce((x,y)=>x+y,0);
+  const r = band(T, [[10,20,"Label-sceptic","You judge people as individuals, not as age groups.","Help others do the same: when you hear \"Gen Z are…\" or \"Boomers can't…\", ask \"Is that true of the person in front of us?\""],
+                     [21,34,"Partly label-led","You hold some popular stereotypes about generations.","Check each strong belief below against the evidence, and test it on the next real person you meet."],
+                     [35,50,"Strongly label-led","Generational stereotypes may be shaping your decisions about people.","Before any people decision (hiring, promotion, training), ask: \"Would I decide the same if this person were 20 years older or younger?\""]]);
+  const strong = a.items.map((q,i)=>[q,ans[i]]).filter(x=>x[1]>=4);
+  const blocks = [{chip:"Score " + T + " / 50",label:r[2],meaning:r[3],tip:r[4]}];
+  strong.slice(0,4).forEach(x=>blocks.push({chip:"You agreed (" + x[1] + "/5)",label:"“" + x[0].t + "”",meaning:"What the evidence says: " + x[0].why}));
+  if (strong.length > 4) blocks.push({chip:"And more",label:(strong.length-4) + " other strong beliefs",meaning:"See the answer key below."});
+  const rows = a.items.map((q,i)=>"<tr><td>"+(i+1)+"</td><td>"+ans[i]+"</td><td>"+q.why+"</td></tr>").join("");
+  blocks.push({chip:"Remember",label:"Generalization vs stereotype",meaning:"A generalization is a starting hypothesis you test; a stereotype is a closed conclusion. Use generations to open a conversation, never to close a decision."});
+  return {headline:r[2], sub:"Stereotype score " + T + " / 50 (higher = stronger belief in labels)", scores:{Total:T,Strong_beliefs:strong.length}, blocks,
+    extraHTML:"<div class='rblock'><h3>What the evidence says</h3><table class='k'><tr><th>#</th><th>You</th><th>Evidence</th></tr>"+rows+"</table></div>",
+    bars:[["Belief in stereotypes",T,50,35]]};
+},
+"4.2"(a, ans){
+  const c = [0,1,2,3].map(i => count(ans, i));
+  const P = [
+    ["The Security Seeker","You value stability, a fair income and a predictable future.","Talk openly with your manager about what security means for you (contract, income, skills). Build \"portable\" security too: skills that keep you employable anywhere.","Give clear information early about changes, a fair pay story, and a visible future in the company."],
+    ["The Life Designer","You want work to fit around your life: control over when, where and how.","Earn flexibility through trust: be reliable, visible and easy to reach in agreed hours.","Agree outcomes, not hours. Offer choice inside a frame: core hours together, flexibility around them."],
+    ["The Growth Climber","You want to learn, be challenged and move up or across.","Ask for a development plan with your manager, and look for stretch projects, not just promotions.","Give frequent feedback, stretch assignments and a visible career path (including expert tracks)."],
+    ["The Purpose Driver","You want your work to matter and to match your values.","Connect your daily tasks to the impact they have. If they don't connect, discuss it openly.","Explain the \"why\" of the work and show the impact. Involve them in projects they believe in."]];
+  const order = [0,1,2,3].sort((x,y)=>c[y]-c[x]), m = order[0], b = order[1], tie = c[m] === c[b];
+  const blocks = [{chip:"Main driver · " + c[m] + "/8",label:P[m][0],meaning:P[m][1],tip:P[m][2]},
+    {chip:"Second driver · " + c[b] + "/8",label:P[b][0],meaning:P[b][1],tip:P[b][2]},
+    {chip:"For your manager",label:"How to lead you",meaning:P[m][3]},
+    {chip:"Life stage, not generation",label:"This will change",meaning:"Career priorities shift with life stage (first job, family, caring for parents, late career) more than with birth year. Retake this in two years and compare."}];
+  if (tie) blocks.unshift({chip:"Blended result",label:"Two drivers are equally strong",meaning:"You scored the same on " + P[m][0].replace("The ","") + " and " + P[b][0].replace("The ","") + ". Both matter to you right now.",tip:"Ask yourself: if you had to give one up for a year, which would it be? That answer is your true main driver."});
+  return {headline:tie ? "Blended: " + P[m][0].replace("The ","") + " + " + P[b][0].replace("The ","") : P[m][0], sub:"Security " + c[0] + " · Flexibility " + c[1] + " · Growth " + c[2] + " · Purpose " + c[3],
+    scores:{Security:c[0],Flexibility:c[1],Growth:c[2],Purpose:c[3],Main:P[m][0]}, blocks,
+    bars:[["Security",c[0],8],["Flexibility",c[1],8],["Growth",c[2],8],["Purpose",c[3],8]]};
+},
+"4.3"(a, ans){
+  const F = ans.slice(0,5).filter(x=>x===1).length, C = ans.slice(5).filter(x=>x===1).length;
+  const f = band(F, [[4,5,"Fast and frequent feedback","You like short, regular, informal feedback and want to know the why.","Ask for it: \"Can we do a 10-minute check-in every week?\" When you give feedback to formal colleagues, schedule it and prepare it."],
+                     [2,3,"Flexible on feedback","You can work with formal reviews and quick feedback.","Tell your manager which kind helps you most in each situation."],
+                     [0,1,"Structured, formal feedback","You prefer planned, detailed feedback from your manager.","Explain this preference to fast-moving colleagues, and practise giving a quick \"thank you\" in the moment too."]]);
+  const cc = band(C, [[4,5,"Quick and informal communicator","Chat, first names, fast replies and short meetings.","With formal colleagues (often senior, or from high power-distance cultures), use titles, greetings and complete answers until invited to relax."],
+                      [2,3,"Flexible communicator","You switch between formal and informal styles.","Agree a team communication charter: which channel for what, and how fast to reply."],
+                      [0,1,"Formal and structured communicator","Calls, meetings, formal emails and complete answers.","With informal colleagues, accept short messages as efficiency, not disrespect, and try one quick chat check-in a week."]]);
+  return {headline:f[2] + " · " + cc[2], sub:"Feedback B-score " + F + "/5 · Communication B-score " + C + "/5",
+    scores:{Feedback_B:F,Feedback_style:f[2],Communication_B:C,Communication_style:cc[2]},
+    blocks:[{chip:"Feedback · " + F + "/5",label:f[2],meaning:f[3],tip:f[4]},{chip:"Communication · " + C + "/5",label:cc[2],meaning:cc[3],tip:cc[4]},
+      {chip:"Don't guess from age",label:"Ask, don't assume",meaning:"These preferences vary by person and culture as much as by age. A 60-year-old Dutch engineer may want blunt, fast feedback; a 24-year-old Japanese analyst may want it private and formal."}],
+    bars:[["Fast feedback",F,5],["Informal communication",C,5]]};
+},
+"4.4"(a, ans){
+  const Fa = sumBy(a.items, ans, "Fair"), Br = sumBy(a.items, ans, "Bridge"), T = Fa + Br;
+  const r = band(T, [[40,50,"Age-inclusive leader","You judge people by what they do, not their age, and you connect generations.","Make it contagious: start a two-way mentoring pair or a mixed-age project in your team."],
+                     [30,39,"On the way","Good habits, with a few blind spots.","Pick your lowest area below and choose one habit to practise for 30 days."],
+                     [10,29,"Age blind spots","Age may be shaping your decisions more than you think.","Start with one rule: before any people decision, ask \"Would I decide the same if this person were 20 years older or younger?\""]]);
+  const blocks = [{chip:"Total " + T + " / 50",label:r[2],meaning:r[3],tip:r[4]}];
+  if (Fa <= 18 || Fa <= Br) blocks.push({chip:"Fair judgment · " + Fa + "/25",label:"Fair judgment",meaning:"Making decisions without age bias.",tip:"Remove age signals from job ads and promotion talks. Ask people what they want instead of guessing."});
+  if (Br <= 18 || Br < Fa) blocks.push({chip:"Bridge-building · " + Br + "/25",label:"Bridge-building",meaning:"Connecting generations and transferring knowledge.",tip:"Mix ages in your next project team, and ask one experienced colleague: \"What do you know that we would miss if you left?\""});
+  return {headline:r[2], sub:"Fair judgment " + Fa + " · Bridge-building " + Br, scores:{Total:T,Fair_judgment:Fa,Bridge_building:Br}, blocks,
+    bars:[["Fair judgment",Fa,25,19],["Bridge-building",Br,25,19]]};
+},
+"4.5"(a, ans){
+  const ok = ans.map((x,i)=>a.choices[x]===a.items[i].a), T = ok.filter(Boolean).length;
+  const r = band(T, [[9,10,"Evidence detective","You can separate generational myths from research.","Use it: challenge the next \"Gen Z are…\" or \"Boomers can't…\" claim you hear with one fact."],
+                     [6,8,"Good myth radar","You spotted most of them.","Look at the ones you missed below: which stereotype felt true, and why?"],
+                     [0,5,"Myth-prone","Popular claims may be shaping your view of generations.","Before believing a generational claim, ask: is this age, life stage, the times — or really generation?"]]);
+  const rows = a.items.map((q,i)=>"<tr><td>"+(i+1)+"</td><td>"+a.choices[ans[i]]+(ok[i]?" ✓":" ✗")+"</td><td><b>"+q.a+"</b></td><td>"+q.why+"</td></tr>").join("");
+  return {headline:r[2], sub:T + " / 10 correct", scores:{Correct:T},
+    blocks:[{chip:T + " / 10",label:r[2],meaning:r[3],tip:r[4]}],
+    extraHTML:"<div class='rblock'><h3>Answers</h3><table class='k'><tr><th>#</th><th>Your answer</th><th>Answer</th><th>Evidence</th></tr>"+rows+"</table></div>",
+    bars:[["Correct",T,10]]};
+}
+};
+
+/* =========================================================
+   4) STATE & STORAGE
+   ========================================================= */
+const LS = {
+  get(k, d){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch(e){ return d; } },
+  set(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+};
+let MEM = {user:null, results:{}, queue:[]};
+const getUser = () => LS.get("mldc_user", MEM.user);
+const setUser = u => { MEM.user = u; LS.set("mldc_user", u); };
+const getResults = () => LS.get("mldc_results", MEM.results);
+const saveResult = (id, r) => { const all = getResults(); all[id] = r; MEM.results = all; LS.set("mldc_results", all); };
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+let state = {day:1, view:"home", aid:null, ans:[], extra:{}};
+
+function setDayColors(d){
+  const r = document.documentElement.style;
+  r.setProperty("--c", "var(" + DAYS[d].c + ")"); r.setProperty("--ct", "var(" + DAYS[d].ct + ")");
+}
+
+/* =========================================================
+   5) SUBMISSION TO GOOGLE SHEETS
+   ========================================================= */
+function submit(payload){
+  const q = LS.get("mldc_queue", MEM.queue); q.push(payload); MEM.queue = q; LS.set("mldc_queue", q);
+  return flush();
+}
+async function flush(){
+  const q = LS.get("mldc_queue", MEM.queue);
+  if (!q.length) return {ok:true};
+  if (!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.indexOf("http") !== 0) return {ok:false, msg:"Results are saved on this device. (The Google Sheet link has not been set up yet.)"};
+  const left = [];
+  for (const p of q) {
+    try {
+      await fetch(CONFIG.SCRIPT_URL, {method:"POST", mode:"no-cors", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify(p)});
+    } catch(e) { left.push(p); }
+  }
+  MEM.queue = left; LS.set("mldc_queue", left);
+  return left.length ? {ok:false, msg:"No connection — your result is saved and will be sent automatically next time."} : {ok:true};
+}
+
+/* =========================================================
+   6) VIEWS
+   ========================================================= */
+const app = document.getElementById("app");
+function renderWho(){
+  const u = getUser(), el = document.getElementById("who");
+  el.innerHTML = u ? esc(u.name) + (u.group ? " · " + esc(u.group) : "") + "<br><a id='chg'>Not you? Change</a>" : "";
+  const c = document.getElementById("chg"); if (c) c.onclick = () => { setUser(null); state.view = "home"; render(); };
+}
+function render(){
+  setDayColors(state.view === "assess" || state.view === "result" ? A.find(x=>x.id===state.aid).day : state.day);
+  renderWho();
+  if (!getUser()) return renderLogin();
+  if (state.view === "assess") return renderAssess();
+  if (state.view === "result") return renderResult();
+  renderHome();
+}
+
+function renderLogin(){
+  const p = new URLSearchParams(location.search);
+  app.innerHTML = `
+  <div class="card">
+    <h2>Welcome</h2>
+    <p>Fifteen short self-assessments across the three days of <b>Managing &amp; Leading in Different Countries</b>. Each one takes 5–12 minutes: answer, get your score, read your result and take your tip.</p>
+    <div class="steps"><span>1 · Answer</span><span>2 · Score</span><span>3 · Result</span><span>4 · Tip</span></div>
+    <label class="f" for="nm">Full name *</label><input type="text" id="nm" autocomplete="name">
+    <label class="f" for="em">Email *</label><input type="email" id="em" autocomplete="email">
+    <p class="note">Your answers and results are sent to your trainer for group analysis. There are no right or wrong answers.</p>
+    <div id="lerr" class="status err hide"></div>
+    <button class="btn" id="go">Start</button>
+  </div>`;
+  document.getElementById("go").onclick = () => {
+    const u = {name:nm.value.trim(), email:em.value.trim(), org:"", group:(p.get("g") || CONFIG.COHORT_DEFAULT || "").trim(), country:""};
+    const e = document.getElementById("lerr");
+    if (!u.name || !/^\S+@\S+\.\S+$/.test(u.email)) { e.textContent = "Please enter your name and a valid email."; e.classList.remove("hide"); return; }
+    setUser(u); render();
+    const aid = p.get("a"); if (aid && A.find(x=>x.id===aid)) openA(aid);
+  };
+}
+
+function renderHome(){
+  const res = getResults(), d = state.day;
+  const list = A.filter(x=>x.day===d);
+  const doneN = A.filter(x=>res[x.id]).length;
+  app.innerHTML = `
+  <div class="tabs">${[1,2,3,4].map(k=>`<button class="tab ${k===d?"on":""}" data-d="${k}"><b>${DAYS[k].name}</b><small>${DAYS[k].title}</small></button>`).join("")}</div>
+  <p class="note">${doneN} of ${A.length} completed</p>
+  <div class="grid">${list.map(x=>`
+    <button class="acard" data-id="${x.id}">
+      ${res[x.id] ? `<span class="done res">✓ ${esc(res[x.id].headline)}</span>` : ""}
+      <span class="badge">${x.id}</span>
+      <h3>${x.title}</h3><p>${x.blurb}</p><p><small>⏱ ${x.time} min</small></p>
+    </button>`).join("")}</div>`;
+  app.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{state.day=+b.dataset.d; render(); scrollTo(0,0);});
+  app.querySelectorAll(".acard").forEach(b=>b.onclick=()=>openA(b.dataset.id));
+  flush();
+}
+
+function openA(id){
+  const a = A.find(x=>x.id===id);
+  state = {...state, view:"assess", aid:id, day:a.day, ans:new Array(a.items.length).fill(null), extra:{country:(getUser()||{}).country||""}};
+  if (a.type === "reflect") state.ans = state.ans.map(()=> "");
+  render(); scrollTo(0,0);
+}
+
+function renderAssess(){
+  const a = A.find(x=>x.id===state.aid), letters = a.letters || "ABCD";
+  let qs = "";
+  a.items.forEach((q,i)=>{
+    const n = i + 1;
+    if (a.type === "scale") {
+      qs += `<div class="q" id="q${i}"><div class="qt"><span class="qn">${n}</span><span>${q.t}</span></div>
+        <div class="scale">${Array.from({length:a.n},(_,v)=>`<button data-i="${i}" data-v="${v+1}" aria-label="${v+1}">${v+1}</button>`).join("")}</div>
+        <div class="ends"><span>${a.ends[0]}</span><span>${a.ends[1]}</span></div></div>`;
+    } else if (a.type === "choice") {
+      qs += `<div class="q" id="q${i}"><div class="qt"><span class="qn">${n}</span><span>${q.t}</span></div>
+        <div class="opts">${q.o.map((o,v)=>`<button class="opt" data-i="${i}" data-v="${v}"><span class="L">${letters[v]}</span><span>${o}</span></button>`).join("")}</div></div>`;
+    } else if (a.type === "pair") {
+      const head = a.id === "2.3" && (i === 0 || i === 6) ? `<h3 style="margin:18px 0 4px">${i===0?"Part A — How I communicate":"Part B — How I treat time"}</h3>` : "";
+      qs += head + `<div class="q" id="q${i}"><div class="qt"><span class="qn">${n}</span><span>Which describes you better?</span></div>
+        <div class="opts two">${q.map((o,v)=>`<button class="opt" data-i="${i}" data-v="${v}"><span class="L">${"AB"[v]}</span><span>${o}</span></button>`).join("")}</div></div>`;
+    } else if (a.type === "quiz") {
+      qs += `<div class="q" id="q${i}"><div class="qt"><span class="qn">${n}</span><span>${q.t}</span></div>
+        <select data-i="${i}"><option value="">My guess…</option>${a.choices.map((c,v)=>`<option value="${v}">${c}</option>`).join("")}</select></div>`;
+    } else if (a.type === "reflect") {
+      qs += `<div class="q" id="q${i}"><div class="qt"><span class="qn">${n}</span><span>${q.t}</span></div><textarea data-i="${i}"></textarea></div>`;
+    }
+  });
+  const countrySel = a.country ? `<div class="q"><div class="qt"><span class="qn">★</span><span>Which country are you scoring?</span></div>
+     <select id="cs"><option value="">Select…</option>${Object.keys(HOF).map(c=>`<option ${c===state.extra.country?"selected":""}>${c}</option>`).join("")}<option ${state.extra.country==="Other"?"selected":""}>Other</option></select>
+     <div class="note">Choose a listed country to compare with its official Hofstede scores.</div></div>` : "";
+  app.innerHTML = `
+  <div class="crumb"><a id="back">← ${DAYS[a.day].name}</a> / ${a.id}</div>
+  <div class="card">
+    <div class="ahead"><span class="badge">${a.id}</span><h2>${a.title}</h2></div>
+    <div class="instr">${a.instr}</div>
+    <div class="progress"><i id="pg"></i></div><div class="note" id="pgt"></div>
+  </div>
+  ${countrySel}${qs}
+  <div class="sticky"><div id="miss" class="status err hide"></div><button class="btn" id="score">See my result</button></div>`;
+  document.getElementById("back").onclick = () => { state.view = "home"; render(); };
+  const upd = () => {
+    const n = a.type === "reflect" ? state.ans.filter(x=>x && x.trim()).length : state.ans.filter(x=>x!==null).length;
+    document.getElementById("pg").style.width = (n / a.items.length * 100) + "%";
+    document.getElementById("pgt").textContent = n + " of " + a.items.length + " answered";
+  };
+  app.querySelectorAll(".scale button,.opt").forEach(b=>b.onclick=()=>{
+    const i = +b.dataset.i, v = +b.dataset.v;
+    state.ans[i] = v;
+    b.parentElement.querySelectorAll("button").forEach(x=>x.classList.toggle("on", x===b));
+    document.getElementById("q"+i).classList.remove("miss"); upd();
+  });
+  app.querySelectorAll("select[data-i]").forEach(s=>s.onchange=()=>{ state.ans[+s.dataset.i] = s.value === "" ? null : +s.value; document.getElementById("q"+s.dataset.i).classList.remove("miss"); upd(); });
+  app.querySelectorAll("textarea[data-i]").forEach(t=>t.oninput=()=>{ state.ans[+t.dataset.i] = t.value; upd(); });
+  const cs = document.getElementById("cs"); if (cs) cs.onchange = () => state.extra.country = cs.value;
+  upd();
+  document.getElementById("score").onclick = () => {
+    let missing = [];
+    if (a.type === "reflect") { if (!state.ans.some(x=>x && x.trim())) missing = [0]; }
+    else state.ans.forEach((x,i)=>{ if (x === null) missing.push(i); });
+    const m = document.getElementById("miss");
+    if (missing.length) {
+      missing.forEach(i=>document.getElementById("q"+i).classList.add("miss"));
+      m.textContent = a.type === "reflect" ? "Please write at least one reflection." : "Please answer all questions (" + missing.length + " left).";
+      m.classList.remove("hide");
+      document.getElementById("q"+missing[0]).scrollIntoView({behavior:"smooth", block:"center"});
+      return;
+    }
+    finish(a);
+  };
+}
+
+function finish(a){
+  const r = SCORE[a.id](a, state.ans, state.extra);
+  const u = getUser();
+  const answersTxt = a.type === "reflect" ? [] : state.ans.map(v => a.type === "scale" ? v : a.type === "quiz" ? a.choices[v] : (a.type === "pair" ? "AB" : (a.letters || "ABCD"))[v]);
+  const stored = {headline:r.headline, sub:r.sub, scores:r.scores, at:new Date().toISOString()};
+  saveResult(a.id, stored);
+  state.result = r; state.view = "result";
+  render(); scrollTo(0,0);
+  const payload = {
+    course:CONFIG.COURSE, timestamp:new Date().toISOString(),
+    name:u.name, email:u.email, org:u.org, group:u.group, homeCountry:u.country,
+    day:a.day, assessmentId:a.id, assessment:a.title,
+    result:r.headline, detail:r.sub, scores:r.scores,
+    answers:answersTxt,
+    tips:r.blocks.filter(b=>b.tip).map(b=>b.label + ": " + b.tip).join(" | ")
+  };
+  if (a.type === "reflect") { payload.reflection = {}; a.items.forEach((q,i)=>payload.reflection[q.k] = state.ans[i] || ""); }
+  const st = document.getElementById("send");
+  submit(payload).then(res => {
+    if (!st) return;
+    st.className = "status " + (res.ok ? "ok" : "wait");
+    st.textContent = res.ok ? "✓ Your result has been sent to your trainer." : res.msg;
+  });
+}
+
+function renderResult(){
+  const a = A.find(x=>x.id===state.aid), r = state.result;
+  const bars = (r.bars||[]).map(b=>{
+    const pct = r.barsPct ? b[1] : Math.round(b[1] / b[2] * 100);
+    const mark = b[3] != null ? `<em style="left:calc(${r.barsPct ? b[3] : Math.round(b[3]/b[2]*100)}% - 2px)" title="${r.barsPct ? "Official score" : "Threshold"}"></em>` : "";
+    return `<div class="bar"><span>${b[0]}</span><span class="t"><i style="width:${Math.max(2,pct)}%"></i>${mark}</span><b>${r.barsPct ? b[1] : b[1]}</b></div>`;
+  }).join("");
+  const idx = A.findIndex(x=>x.id===a.id), next = A[idx+1];
+  app.innerHTML = `
+  <div class="crumb"><a id="back">← ${DAYS[a.day].name}</a> / ${a.id} / result</div>
+  <div class="rhero" style="margin-top:12px"><div class="k">${a.id} · ${a.title}</div><h2>${esc(r.headline)}</h2><p>${esc(r.sub)}</p></div>
+  <div id="send" class="status wait">Sending your result…</div>
+  ${bars ? `<div class="rblock"><h3>Your scores</h3>${bars}${r.bars.some(b=>b[3]!=null)?`<div class="note">${r.barsPct ? "Gold marker = official Hofstede score" : "Gold marker = threshold for \"high\""}</div>`:""}</div>` : ""}
+  ${r.blocks.map(b=>`<div class="rblock"><span class="chip">${esc(b.chip)}</span><h3>${esc(b.label)}</h3>${b.meaning?`<div>${esc(b.meaning)}</div>`:""}${b.tip?`<div class="tip"><b>Your tip:</b> ${esc(b.tip)}</div>`:""}</div>`).join("")}
+  ${r.extraHTML || ""}
+  <div class="row" style="margin:18px 0">
+    <button class="btn ghost" id="again">Retake</button>
+    ${next ? `<button class="btn" id="nx">Next: ${next.id} ${next.title} →</button>` : `<button class="btn" id="hm">Back to all assessments</button>`}
+  </div>`;
+  document.getElementById("back").onclick = () => { state.view = "home"; render(); };
+  document.getElementById("again").onclick = () => openA(a.id);
+  const nx = document.getElementById("nx"); if (nx) nx.onclick = () => openA(next.id);
+  const hm = document.getElementById("hm"); if (hm) hm.onclick = () => { state.view = "home"; render(); };
+}
+
+/* deep links: ?d=2 opens a day, ?a=2.1 opens an assessment, ?g=Cohort pre-fills the group */
+(function init(){
+  const p = new URLSearchParams(location.search);
+  if (p.get("d") && DAYS[p.get("d")]) state.day = +p.get("d");
+  render();
+  const aid = p.get("a");
+  if (aid && A.find(x=>x.id===aid) && getUser()) openA(aid);
+  window.addEventListener("online", flush);
+})();
+</script>
+</body>
+</html>
